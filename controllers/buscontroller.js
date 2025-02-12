@@ -74,9 +74,9 @@ const addroute = async (req, res) => {
     };
     checkbus.routeinfo.push(newroute);
     await checkbus.save();
-     const buss=await busmodel.find()
+    const buss=await busmodel.find()
     const routee=await routemodel.find()
-    res.json({ success: true, message: "Route Addeed",buss,routee });
+    res.json({ success: true, message: "Route Addeed",buss,routee});
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: "Error" });
@@ -94,7 +94,7 @@ const removeroute = async (req, res) => {
     );
     const buss=await busmodel.find()
     const routee=await routemodel.find()
-    res.json({ success: true, message: "Route Removed",buss,routee});
+    res.json({ success: true, message: "Route Removed",routee,buss});
   } catch (error) {
     console.log(error);
     res.json({ sucess: false, message: "Error" });
