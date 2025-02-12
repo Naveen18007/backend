@@ -38,6 +38,7 @@ const bookbus = async (req, res) => {
       success: true,
       message: "Bus booked successfully",
       data: booking,
+      bus
     });
   } catch (error) { 
     console.log(error)
@@ -48,7 +49,7 @@ const bookbus = async (req, res) => {
 //cancel bus
 const cancelbus = async (req, res) => {
   try {
-    const { bookingId } = req.body;
+    const bookingId= req.body.id;
     const booking = await bookingmodel.findById(bookingId);
     if (!booking) {
       return res.json({ success: false, message: "Booking not found" });
@@ -60,7 +61,8 @@ const cancelbus = async (req, res) => {
     routee.availableseats += seats;
     await bus.save();
     await bookingmodel.findByIdAndDelete(bookingId);
-    res.json({success:true,message:"Booking canceled"})
+    const book=await bookingmodel.find()
+    res.json({success:true,message:"Booking canceled",book})
   } catch (error) {
     console.log(error);
     res.json({ suscess: false, messgae: "Error" });
