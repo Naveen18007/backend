@@ -13,7 +13,7 @@ const addbus = async (req, res) => {
   });
   try {
     await bus.save();
-    res.json({ success: true, message: "Bus Addeed" });
+    res.json({ success: true, message: "Bus Addeed",bus});
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: "Error" });
@@ -28,7 +28,8 @@ const removebus = async (req, res) => {
     await busmodel.findByIdAndDelete(req.body.id);
     await routemodel.deleteMany({ busId:req.body.id });
     await bookingmodel.deleteMany({busnum:bus.busnum})
-    res.json({ success: true, message: "Bus Removed" });
+    const buss=await busmodel.find()
+    res.json({ success: true, message: "Bus Removed",buss});
   } catch (error) {
     console.log(error);
     res.json({ sucess: false, message: "Error" });
@@ -40,7 +41,8 @@ const updatebus = async (req, res) => {
   try {
     const { id, busnum, price } = req.body;
     await busmodel.findByIdAndUpdate(id, { busnum, price });
-    res.json({ success: true, message: "Bus Updated" });
+    const bus=await busmodel.find()
+    res.json({ success: true, message: "Bus Updated",bus});
   } catch (error) {
     console.log(error);
     res.json({ sucess: false, message: "Error" });
@@ -72,7 +74,9 @@ const addroute = async (req, res) => {
     };
     checkbus.routeinfo.push(newroute);
     await checkbus.save();
-    res.json({ success: true, message: "Route Addeed" });
+     const buss=await busmodel.find()
+    const routee=await routemodel.find()
+    res.json({ success: true, message: "Route Addeed",buss,routee });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: "Error" });
@@ -88,7 +92,9 @@ const removeroute = async (req, res) => {
       { _id: route.busId },
       { $pull: { routeinfo: { _id: req.body.id } } }
     );
-    res.json({ success: true, message: "Route Removed" });
+    const buss=await busmodel.find()
+    const routee=await routemodel.find()
+    res.json({ success: true, message: "Route Removed",buss,routee});
   } catch (error) {
     console.log(error);
     res.json({ sucess: false, message: "Error" });
@@ -116,7 +122,9 @@ const updateroute = async (req, res) => {
         },
       }
     );
-    res.json({ success: true, message: "Route Updated" });
+    const routee=await routemodel.find()
+    const buss=await busmodel.find()
+    res.json({ success: true, message: "Route Updated",routee,buss});
   } catch (error) {
     console.log(error);
     res.json({ sucess: false, message: "Error" });
